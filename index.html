@@ -75,7 +75,7 @@
     }
     .proj {
       display: grid;
-      grid-template-columns: 200px 1fr;
+      grid-template-columns: 250px 1fr;
       gap: 24px;
       padding: 24px;
       border: 1px solid var(--line);
@@ -86,17 +86,52 @@
     .proj + .proj { margin-top: 16px; }
     .proj:hover { border-color: rgba(255,255,255,0.28); }
     .proj-thumb {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      aspect-ratio: 4 / 3;
+      position: relative;
+      display: block;
       align-self: start;
       border-radius: 10px;
       overflow: hidden;
-      background: #fafafa;
+      background: #fff;
+      cursor: zoom-in;
+      border: 0;
+      padding: 0;
     }
-    .proj-thumb img { width: 100%; height: 100%; object-fit: contain; display: block; }
-    .proj-thumb.logo img { width: 78%; height: auto; }
+    .proj-thumb img { width: 100%; height: auto; display: block; transition: transform .3s; }
+    .proj-thumb:hover img { transform: scale(1.03); }
+    .proj-thumb::after {
+      content: "Click to enlarge";
+      position: absolute;
+      right: 8px; bottom: 8px;
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 0.65rem;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: rgba(0,0,0,0.7);
+      color: #fff;
+      opacity: 0;
+      transition: opacity .2s;
+    }
+    .proj-thumb:hover::after, .proj-thumb:focus-visible::after { opacity: 1; }
+
+    /* ---------- Lightbox ---------- */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      background: rgba(0,0,0,0.9);
+      cursor: zoom-out;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img {
+      max-width: min(1400px, 100%);
+      max-height: 100%;
+      border-radius: 8px;
+      background: #fff;
+    }
     .proj-head {
       display: flex;
       justify-content: space-between;
@@ -186,7 +221,7 @@
     }
     @media (max-width: 640px) {
       .proj { grid-template-columns: 1fr; padding: 18px; gap: 16px; }
-      .proj-thumb { max-width: 320px; }
+      .proj-thumb { max-width: 420px; }
       .proj-head { flex-direction: column-reverse; gap: 8px; }
     }
     @media (max-width: 520px) {
@@ -294,8 +329,8 @@
       <h2>Research &amp; Projects</h2>
 
       <article class="proj">
-        <a class="proj-thumb" href="https://refdecoder.github.io/" target="_blank" rel="noopener">
-          <img src="images/refdecoder.jpg" alt="RefDecoder architecture overview" loading="lazy">
+        <a class="proj-thumb" href="images/refdecoder-teaser.jpg" aria-label="Enlarge RefDecoder teaser figure">
+          <img src="images/refdecoder-thumb.jpg" alt="RefDecoder teaser: traditional video generation vs. RefDecoder, with example generated videos" loading="lazy">
         </a>
         <div>
           <div class="proj-head">
@@ -316,8 +351,8 @@
       </article>
 
       <article class="proj">
-        <a class="proj-thumb logo" href="https://allenai.org/blog/molmoact" target="_blank" rel="noopener">
-          <img src="images/molmoact-logo.svg" alt="MolmoAct logo" loading="lazy">
+        <a class="proj-thumb" href="images/molmoact-teaser.jpg" aria-label="Enlarge MolmoAct teaser figure">
+          <img src="images/molmoact-thumb.jpg" alt="MolmoAct overview: data, reasoning in space with depth and visual traces, and real-world deployment" loading="lazy">
         </a>
         <div>
           <div class="proj-head">
@@ -341,7 +376,28 @@
     </section>
   </main>
 
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Figure preview">
+    <img alt="">
+  </div>
+
   <script>
+  // Figure lightbox
+  (() => {
+    const box = document.getElementById('lightbox');
+    const img = box.querySelector('img');
+    const close = () => { box.classList.remove('open'); img.removeAttribute('src'); };
+    document.querySelectorAll('.proj-thumb').forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        img.src = a.getAttribute('href');
+        img.alt = a.querySelector('img').alt;
+        box.classList.add('open');
+      });
+    });
+    box.addEventListener('click', close);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+  })();
+
   (() => {
     const canvas = document.getElementById('field');
     const ctx = canvas.getContext('2d');
