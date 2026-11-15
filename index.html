@@ -47,6 +47,9 @@
       padding: 12vh 16px 96px;
       pointer-events: none; /* let the cursor keep driving the field */
     }
+    .card h1, .card p, .section h2, .footnote {
+      text-shadow: 0 0 6px #000, 0 0 14px #000, 0 0 24px rgba(0,0,0,0.8);
+    }
     .card {
       pointer-events: auto;
       text-align: center;
@@ -233,7 +236,7 @@
       border-radius: 50%;
       object-fit: cover;
       border: 1px solid var(--line);
-      box-shadow: 0 0 0 6px rgba(255,255,255,0.04), 0 0 60px rgba(255,255,255,0.08);
+      box-shadow: 0 0 40px rgba(255,255,255,0.10);
       display: block;
       margin: 0 auto 28px;
       background: #111;
@@ -287,6 +290,7 @@
       border: 1px solid var(--line);
       border-radius: 999px;
       color: var(--fg);
+      background: rgba(0,0,0,0.6);
       text-decoration: none;
       font-size: 0.9rem;
       transition: background .2s, border-color .2s;
@@ -516,9 +520,9 @@
           const ox = Math.max(r.left - p.x, 0, p.x - r.right);
           const oy = Math.max(r.top - p.y, 0, p.y - r.bottom);
           const dist = Math.hypot(ox, oy);
-          if (dist < 56) {
-            const t = dist / 56;
-            alpha *= 0.12 + 0.88 * t * t * (3 - 2 * t);   // smooth falloff, no hard edge
+          if (dist < 14) {
+            const t = dist / 14;
+            alpha *= 0.35 + 0.65 * t;   // only a light dim right under text
           }
         }
         drawArrow(p.x, p.y, p.a, len, alpha);
