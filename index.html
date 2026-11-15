@@ -73,43 +73,97 @@
       color: var(--muted);
       margin-bottom: 20px;
     }
-    .pub {
-      padding: 20px 0;
-      border-top: 1px solid var(--line);
+    .proj {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 24px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(10, 10, 10, 0.9);
+      transition: border-color .2s;
     }
-    .pub:first-of-type { border-top: none; padding-top: 0; }
-    .pub-title {
-      font-size: 1.05rem;
+    .proj + .proj { margin-top: 16px; }
+    .proj:hover { border-color: rgba(255,255,255,0.28); }
+    .proj-thumb {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      aspect-ratio: 4 / 3;
+      align-self: start;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fafafa;
+    }
+    .proj-thumb img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .proj-thumb.logo img { width: 78%; height: auto; }
+    .proj-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .proj-title {
+      font-size: 1.12rem;
       font-weight: 500;
-      line-height: 1.4;
+      line-height: 1.35;
       color: var(--fg);
     }
-    .pub-authors {
-      margin-top: 6px;
-      font-size: 0.88rem;
+    .tag {
+      flex-shrink: 0;
+      font-size: 0.75rem;
+      padding: 3px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.22);
+      color: #e6e6e6;
+      background: rgba(255,255,255,0.06);
+      white-space: nowrap;
+    }
+    .proj-authors {
+      margin-top: 8px;
+      font-size: 0.9rem;
       color: #a8a8a8;
       font-weight: 300;
     }
-    .pub-authors strong { color: var(--fg); font-weight: 500; }
-    .pub-venue {
-      margin-top: 4px;
-      font-size: 0.85rem;
-      color: #8a8a8a;
-      font-style: italic;
-    }
-    .pub-desc {
+    .proj-authors strong { color: var(--fg); font-weight: 600; }
+    .proj-venue {
       margin-top: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 10px;
       font-size: 0.92rem;
-      color: #cfcfcf;
+      font-weight: 600;
+      color: #e0e0e0;
+    }
+    .role {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      padding: 2px 9px;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.1);
+      color: #f0f0f0;
+    }
+    .award {
+      margin-top: 8px;
+      font-size: 0.9rem;
+      color: #f2c86b;
+    }
+    .proj-desc {
+      margin-top: 10px;
+      font-size: 0.92rem;
+      color: #c4c4c4;
       font-weight: 300;
     }
-    .pub-links {
-      margin-top: 12px;
+    .proj-links {
+      margin-top: 14px;
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
     }
-    .pub-links a {
+    .proj-links a {
       font-family: "JetBrains Mono", ui-monospace, monospace;
       font-size: 0.75rem;
       padding: 4px 12px;
@@ -119,7 +173,17 @@
       text-decoration: none;
       transition: background .2s, border-color .2s;
     }
-    .pub-links a:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.4); }
+    .proj-links a:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.4); }
+    .footnote {
+      margin-top: 18px;
+      font-size: 0.8rem;
+      color: #7a7a7a;
+    }
+    @media (max-width: 640px) {
+      .proj { grid-template-columns: 1fr; padding: 18px; gap: 16px; }
+      .proj-thumb { max-width: 320px; }
+      .proj-head { flex-direction: column-reverse; gap: 8px; }
+    }
     @media (max-width: 520px) {
       .section { padding: 24px 18px; }
     }
@@ -221,32 +285,53 @@
       </nav>
     </section>
 
-    <section class="section quiet" id="publications">
-      <h2>Publications</h2>
+    <section class="section quiet" id="research">
+      <h2>Research &amp; Projects</h2>
 
-      <article class="pub">
-        <div class="pub-title">RefDecoder: Enhancing Visual Generation with Conditional Video Decoding</div>
-        <div class="pub-authors">Xiang Fan, Yuheng Wang, <strong>Bohan Fang</strong>, Zhongzheng Ren, Ranjay Krishna</div>
-        <div class="pub-venue">arXiv, 2026</div>
-        <p class="pub-desc">Latent video diffusion models condition the denoiser but leave the VAE decoder unconditional, losing fine detail. RefDecoder injects a reference image into the decoder via reference attention, improving reconstruction by up to +2.1 dB PSNR and plugging into existing generators without fine-tuning.</p>
-        <div class="pub-links">
-          <a href="https://refdecoder.github.io/" target="_blank" rel="noopener">Project</a>
-          <a href="https://arxiv.org/abs/2605.15196" target="_blank" rel="noopener">arXiv</a>
-          <a href="https://arxiv.org/pdf/2605.15196" target="_blank" rel="noopener">PDF</a>
+      <article class="proj">
+        <a class="proj-thumb" href="https://refdecoder.github.io/" target="_blank" rel="noopener">
+          <img src="images/refdecoder.jpg" alt="RefDecoder architecture overview" loading="lazy">
+        </a>
+        <div>
+          <div class="proj-head">
+            <div class="proj-title">RefDecoder: Enhancing Visual Generation with Conditional Video Decoding</div>
+            <span class="tag">Video Generation</span>
+          </div>
+          <div class="proj-authors">Xiang Fan*, Yuheng Wang*, <strong>Bohan Fang*</strong>, Zhongzheng Ren, Ranjay Krishna</div>
+          <div class="proj-venue">NeurIPS 2026 <span class="role">Co-first author</span></div>
+          <div class="award">🏆 Best Paper Award at the AI for Content Creation (AICC) Workshop @ CVPR 2026</div>
+          <p class="proj-desc">Reference-guided video autoencoder that injects high-fidelity details from a reference image directly into the VAE decoder, improving video generation quality as a plug-and-play module.</p>
+          <div class="proj-links">
+            <a href="https://refdecoder.github.io/" target="_blank" rel="noopener">Project</a>
+            <a href="https://arxiv.org/abs/2605.15196" target="_blank" rel="noopener">arXiv</a>
+            <a href="https://github.com/RefDecoder/RefDecoder" target="_blank" rel="noopener">Code</a>
+            <a href="https://huggingface.co/Arrokothwhi/RefDecoder" target="_blank" rel="noopener">Model</a>
+          </div>
         </div>
       </article>
 
-      <article class="pub">
-        <div class="pub-title">MolmoAct: Action Reasoning Models that can Reason in Space</div>
-        <div class="pub-authors">Jason Lee, Jiafei Duan, Haoquan Fang, Yuquan Deng, Shuo Liu, Boyang Li, <strong>Bohan Fang</strong>, Jieyu Zhang, Yi Ru Wang, Sangho Lee, Winson Han, Wilbert Pumacay, Angelica Wu, Rose Hendrix, Karen Farley, Eli VanderBilt, Ali Farhadi, Dieter Fox, Ranjay Krishna</div>
-        <div class="pub-venue">arXiv, 2025</div>
-        <p class="pub-desc">An open action reasoning model for robotics that reasons through depth perception and visual trajectory planning before acting, with fully open weights, training code, and the MolmoAct robot dataset.</p>
-        <div class="pub-links">
-          <a href="https://allenai.org/blog/molmoact" target="_blank" rel="noopener">Blog</a>
-          <a href="https://arxiv.org/abs/2508.07917" target="_blank" rel="noopener">arXiv</a>
-          <a href="https://arxiv.org/pdf/2508.07917" target="_blank" rel="noopener">PDF</a>
+      <article class="proj">
+        <a class="proj-thumb logo" href="https://allenai.org/blog/molmoact" target="_blank" rel="noopener">
+          <img src="images/molmoact-logo.svg" alt="MolmoAct logo" loading="lazy">
+        </a>
+        <div>
+          <div class="proj-head">
+            <div class="proj-title">MolmoAct: Action Reasoning Models that can Reason in Space</div>
+            <span class="tag">Robotics</span>
+          </div>
+          <div class="proj-authors">Jason Lee, Jiafei Duan, Haoquan Fang, Yuquan Deng, Shuo Liu, Boyang Li, <strong>Bohan Fang</strong>, Jieyu Zhang, Yi Ru Wang, Sangho Lee, Winson Han, Wilbert Pumacay, Angelica Wu, Rose Hendrix, Karen Farley, Eli VanderBilt, Ali Farhadi, Dieter Fox, Ranjay Krishna</div>
+          <div class="proj-venue">arXiv 2025 <span class="role">Core contributor</span></div>
+          <p class="proj-desc">Open action reasoning model that lets robots reason in space &mdash; perceiving depth and planning visual trajectories before acting &mdash; released with fully open weights, training code, and data.</p>
+          <div class="proj-links">
+            <a href="https://allenai.org/blog/molmoact" target="_blank" rel="noopener">Blog</a>
+            <a href="https://arxiv.org/abs/2508.07917" target="_blank" rel="noopener">arXiv</a>
+            <a href="https://github.com/allenai/molmoact" target="_blank" rel="noopener">Code</a>
+            <a href="https://huggingface.co/allenai/MolmoAct-7B-D-0812" target="_blank" rel="noopener">Model</a>
+          </div>
         </div>
       </article>
+
+      <p class="footnote">* Equal contribution</p>
     </section>
   </main>
 
