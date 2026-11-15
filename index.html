@@ -55,7 +55,7 @@
       text-align: center;
       width: 100%;
       max-width: 760px;
-      padding: 44px 32px 40px;
+      padding: 32px 32px 30px;
       border: 1px solid var(--line);
       border-radius: 16px;
       background: rgba(12, 12, 12, 0.62);
@@ -63,7 +63,7 @@
       backdrop-filter: blur(3px);
     }
     @media (max-width: 520px) {
-      .card { padding: 32px 18px; }
+      .card { padding: 26px 18px; }
     }
     /* ---------- Sections ---------- */
     .section {
@@ -269,8 +269,10 @@
       border: 1px solid var(--line);
       box-shadow: 0 0 40px rgba(255,255,255,0.10);
       display: block;
-      margin: 0 auto 28px;
+      flex-shrink: 0;
+      margin: 0 auto;
       background: #111;
+      pointer-events: auto;
     }
     h1 {
       font-size: clamp(2rem, 6vw, 2.8rem);
@@ -338,8 +340,9 @@
   <canvas id="field" aria-hidden="true"></canvas>
 
   <main>
+    <img data-quiet class="avatar" src="avatar.jpg" alt="Bohan Fang">
+
     <section class="card">
-      <img data-quiet class="avatar" src="avatar.jpg" alt="Bohan Fang">
       <h1 data-quiet>Bohan Fang</h1>
       <p data-quiet class="tagline">Undergraduate @ UW Computer Science &amp; Engineering</p>
       <p data-quiet class="meta">SEATTLE, WA</p>
